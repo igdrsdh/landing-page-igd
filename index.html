@@ -9,11 +9,6 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Firebase SDK (Optional but recommended for Analytics) -->
-    <script src="/__/firebase/11.1.0/firebase-app-compat.js"></script>
-    <script src="/__/firebase/11.1.0/firebase-analytics-compat.js"></script>
-    <script src="/__/firebase/init.js"></script>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
@@ -26,9 +21,55 @@
             100% { transform: scale(0.98); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
         }
         html { scroll-behavior: smooth; }
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-active {
+            display: flex;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
+
+    <!-- Modal Pilihan WhatsApp -->
+    <div id="waModal" class="modal-overlay" onclick="closeWAModal()">
+        <div class="bg-white rounded-[2rem] p-8 w-[90%] max-w-sm shadow-2xl transition-all scale-95" onclick="event.stopPropagation()">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h3 class="font-bold text-xl">Hubungi IGD via WA</h3>
+                <p class="text-gray-500 text-sm mt-2">Silakan pilih salah satu nomor layanan kami:</p>
+            </div>
+            <div class="space-y-3">
+                <a href="https://wa.me/6281217562592" class="flex items-center justify-between bg-gray-50 hover:bg-green-50 p-4 rounded-2xl border border-gray-100 hover:border-green-200 transition-all group">
+                    <div class="flex flex-col">
+                        <span class="text-xs text-gray-400 font-semibold uppercase">Layanan 1</span>
+                        <span class="font-bold text-gray-700">0812-1756-2592</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-300 group-hover:text-green-500"></i>
+                </a>
+                <a href="https://wa.me/6282233119331" class="flex items-center justify-between bg-gray-50 hover:bg-green-50 p-4 rounded-2xl border border-gray-100 hover:border-green-200 transition-all group">
+                    <div class="flex flex-col">
+                        <span class="text-xs text-gray-400 font-semibold uppercase">Layanan 2</span>
+                        <span class="font-bold text-gray-700">0822-3311-9331</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-300 group-hover:text-green-500"></i>
+                </a>
+            </div>
+            <button onclick="closeWAModal()" class="w-full mt-6 text-gray-400 text-sm font-medium hover:text-gray-600 transition-colors">Batal</button>
+        </div>
+    </div>
 
     <!-- Navigasi -->
     <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
@@ -38,13 +79,13 @@
                     <i class="fas fa-hospital-symbol text-xl"></i>
                 </div>
                 <div class="flex flex-col leading-none">
-                    <span class="font-bold text-lg tracking-tight text-gray-800 uppercase">Dian Husada</span>
+                    <span class="font-bold text-lg tracking-tight text-gray-800 uppercase text-xs sm:text-lg">Dian Husada</span>
                     <span class="text-[10px] text-red-600 font-bold tracking-[0.2em] uppercase">Rumah Sakit</span>
                 </div>
             </div>
-            <a href="https://wa.me/6282233119331" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all flex items-center gap-2 shadow-lg shadow-green-100">
-                <i class="fab fa-whatsapp"></i> <span class="hidden sm:inline">WhatsApp</span>
-            </a>
+            <button onclick="openWAModal()" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all flex items-center gap-2 shadow-lg shadow-green-100">
+                <i class="fab fa-whatsapp"></i> <span class="hidden sm:inline">WhatsApp IGD</span>
+            </button>
         </div>
     </nav>
 
@@ -66,10 +107,10 @@
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="https://wa.me/628123456789" class="emergency-pulse w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-green-600 text-white px-10 py-5 rounded-2xl font-bold text-xl hover:bg-green-700 transition-all shadow-xl shadow-green-200">
+                <button onclick="openWAModal()" class="emergency-pulse w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-green-600 text-white px-10 py-5 rounded-2xl font-bold text-xl hover:bg-green-700 transition-all shadow-xl shadow-green-200">
                     <i class="fab fa-whatsapp text-2xl"></i> Hubungi via WA
-                </a>
-                <a href="https://maps.app.goo.gl/hA6zFQ1PAU3F33fw6" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-white border-2 border-gray-200 text-gray-700 px-10 py-5 rounded-2xl font-bold text-xl hover:border-red-600 hover:text-red-600 transition-all">
+                </button>
+                <a href="#lokasi" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-white border-2 border-gray-200 text-gray-700 px-10 py-5 rounded-2xl font-bold text-xl hover:border-red-600 hover:text-red-600 transition-all">
                     <i class="fas fa-map-marked-alt text-xl"></i> Peta Lokasi
                 </a>
             </div>
@@ -145,15 +186,16 @@
         <div class="max-w-5xl mx-auto">
             <div class="text-center mb-10">
                 <h2 class="text-2xl font-bold">Kunjungi Kami</h2>
-                <p class="text-gray-500 mt-2">Jl. Raya Gempol - Mojokerto No.45, Mojoanyar, Mojokerto</p>
+                <p class="text-gray-500 mt-2">Jl. Raya Gemekan No.77, Gemekan, Sooko, Mojokerto</p>
             </div>
-            <div class="bg-gray-200 w-full h-96 rounded-[3rem] overflow-hidden shadow-2xl relative">
-                <!-- Replace this iframe with your actual Google Maps Embed code -->
+            <div class="bg-white w-full h-96 rounded-[3rem] overflow-hidden shadow-2xl relative border border-gray-100">
                 <iframe 
-                    class="w-full h-full grayscale"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.123456789!2d112.4468!3d-7.4891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMjknMjAuOCJTIDExMsKwMjYnNDguNSJF!5e0!3m2!1sid!2sid!4v1234567890" 
+                    class="w-full h-full"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.1238992160937!2d112.40813840000001!3d-7.5284922!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e780d1275d4c375%3A0xe3c2a57508dfd53!2sRumah%20Sakit%20Dian%20Husada%20Mojokerto!5e0!3m2!1sid!2sid!4v1735894100000!5m2!1sid!2sid" 
+                    style="border:0;" 
                     allowfullscreen="" 
-                    loading="lazy">
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>
         </div>
@@ -171,20 +213,34 @@
                 </a>
             </div>
             <div class="flex flex-col gap-2">
-                <p class="text-gray-800 font-bold uppercase tracking-widest">RS Dian Husada</p>
-                <p class="text-gray-400 text-xs">© 2024 RS Dian Husada. Terakreditasi Paripurna.</p>
+                <p class="text-gray-800 font-bold uppercase tracking-widest text-sm">RS Dian Husada</p>
+                <p class="text-gray-400 text-[10px] sm:text-xs px-4 leading-relaxed">Jl. Raya Gemekan No.77, Sooko, Mojokerto | © 2026 RS Dian Husada.</p>
             </div>
         </div>
     </footer>
 
     <!-- WhatsApp Sticky Button (Mobile Only) -->
-    <div class="fixed bottom-0 left-0 right-0 p-4 md:hidden z-50 pointer-events-none">
+    <div class="fixed bottom-0 left-0 right-0 p-4 md:hidden z-[60] pointer-events-none">
         <div class="max-w-md mx-auto pointer-events-auto">
-            <a href="https://wa.me/628123456789" class="flex items-center justify-center gap-3 bg-green-600 text-white w-full py-5 rounded-[2rem] shadow-2xl shadow-green-300 font-bold text-lg active:scale-95 transition-transform border-4 border-white/20 backdrop-blur-sm">
-                <i class="fab fa-whatsapp text-2xl"></i> Chat WhatsApp IGD
-            </a>
+            <button onclick="openWAModal()" class="flex items-center justify-center gap-3 bg-green-600 text-white w-full py-5 rounded-[2rem] shadow-2xl shadow-green-300 font-bold text-lg active:scale-95 transition-transform border-4 border-white/20 backdrop-blur-sm">
+                <i class="fab fa-whatsapp text-2xl"></i> Hubungi WhatsApp IGD
+            </button>
         </div>
     </div>
+
+    <script>
+        function openWAModal() {
+            const modal = document.getElementById('waModal');
+            modal.classList.add('modal-active');
+            document.body.style.overflow = 'hidden'; // Mencegah scroll saat modal buka
+        }
+
+        function closeWAModal() {
+            const modal = document.getElementById('waModal');
+            modal.classList.remove('modal-active');
+            document.body.style.overflow = 'auto'; // Mengembalikan scroll
+        }
+    </script>
 
 </body>
 </html>
