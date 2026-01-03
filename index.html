@@ -43,31 +43,45 @@
 
     <!-- Modal Pilihan WhatsApp -->
     <div id="waModal" class="modal-overlay" onclick="closeWAModal()">
-        <div class="bg-white rounded-[2rem] p-8 w-[90%] max-w-sm shadow-2xl transition-all scale-95" onclick="event.stopPropagation()">
+        <div class="bg-white rounded-[2rem] p-6 w-[90%] max-w-sm shadow-2xl transition-all scale-95 max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
             <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                <div class="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
                     <i class="fab fa-whatsapp"></i>
                 </div>
                 <h3 class="font-bold text-xl">Hubungi IGD via WA</h3>
-                <p class="text-gray-500 text-sm mt-2">Silakan pilih salah satu nomor layanan kami:</p>
+                <p class="text-gray-500 text-sm mt-1">Pilih layanan darurat kami:</p>
             </div>
+
+            <!-- Panduan Bantuan (Box Baru) -->
+            <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 mb-6">
+                <h4 class="text-blue-800 font-bold text-xs uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <i class="fas fa-info-circle"></i> Panduan Meminta Bantuan:
+                </h4>
+                <ul class="text-xs text-blue-700 space-y-2 leading-relaxed font-medium">
+                    <li class="flex gap-2"><span>1.</span> <span>Jelaskan kondisi korban secara singkat.</span></li>
+                    <li class="flex gap-2"><span>2.</span> <span>Sebutkan tanda atau titik lokasi kejadian.</span></li>
+                    <li class="flex gap-2"><span>3.</span> <span>Sertakan foto kondisi korban (jika bisa).</span></li>
+                    <li class="flex gap-2"><span>4.</span> <span>Kirim <strong>Share Location</strong> melalui WhatsApp.</span></li>
+                </ul>
+            </div>
+
             <div class="space-y-3">
                 <a href="https://wa.me/6281217562592" class="flex items-center justify-between bg-gray-50 hover:bg-green-50 p-4 rounded-2xl border border-gray-100 hover:border-green-200 transition-all group">
                     <div class="flex flex-col">
-                        <span class="text-xs text-gray-400 font-semibold uppercase">Layanan 1</span>
+                        <span class="text-[10px] text-gray-400 font-semibold uppercase">Layanan 1</span>
                         <span class="font-bold text-gray-700">0812-1756-2592</span>
                     </div>
                     <i class="fas fa-chevron-right text-gray-300 group-hover:text-green-500"></i>
                 </a>
                 <a href="https://wa.me/6282233119331" class="flex items-center justify-between bg-gray-50 hover:bg-green-50 p-4 rounded-2xl border border-gray-100 hover:border-green-200 transition-all group">
                     <div class="flex flex-col">
-                        <span class="text-xs text-gray-400 font-semibold uppercase">Layanan 2</span>
+                        <span class="text-[10px] text-gray-400 font-semibold uppercase">Layanan 2</span>
                         <span class="font-bold text-gray-700">0822-3311-9331</span>
                     </div>
                     <i class="fas fa-chevron-right text-gray-300 group-hover:text-green-500"></i>
                 </a>
             </div>
-            <button onclick="closeWAModal()" class="w-full mt-6 text-gray-400 text-sm font-medium hover:text-gray-600 transition-colors">Batal</button>
+            <button onclick="closeWAModal()" class="w-full mt-6 text-gray-400 text-sm font-medium hover:text-gray-600 transition-colors">Tutup</button>
         </div>
     </div>
 
@@ -214,7 +228,7 @@
             </div>
             <div class="flex flex-col gap-2">
                 <p class="text-gray-800 font-bold uppercase tracking-widest text-sm">RS Dian Husada</p>
-                <p class="text-gray-400 text-[10px] sm:text-xs px-4 leading-relaxed">Jl. Raya Gemekan No.77, Sooko, Mojokerto | © 2026 Instalasi Gawat Darurat.</p>
+                <p class="text-gray-400 text-[10px] sm:text-xs px-4 leading-relaxed">Jl. Raya Gemekan No.77, Sooko, Mojokerto | © 2026 IGD.</p>
             </div>
         </div>
     </footer>
@@ -232,13 +246,13 @@
         function openWAModal() {
             const modal = document.getElementById('waModal');
             modal.classList.add('modal-active');
-            document.body.style.overflow = 'hidden'; // Mencegah scroll saat modal buka
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeWAModal() {
             const modal = document.getElementById('waModal');
             modal.classList.remove('modal-active');
-            document.body.style.overflow = 'auto'; // Mengembalikan scroll
+            document.body.style.overflow = 'auto'; 
         }
     </script>
 
