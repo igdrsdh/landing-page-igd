@@ -37,9 +37,39 @@
         .modal-active {
             display: flex;
         }
+        /* Update Notification Style */
+        #update-toast {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            animation: slideDown 0.5s ease-out;
+        }
+        @keyframes slideDown {
+            from { transform: translate(-50%, -100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
+
+    <!-- Update Notification Toast -->
+    <div id="update-toast" class="w-[90%] max-w-sm">
+        <div class="bg-blue-600 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between border-2 border-white/20">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-sync-alt animate-spin"></i>
+                <div class="flex flex-col">
+                    <span class="text-xs font-bold uppercase tracking-wider">Update Tersedia</span>
+                    <span class="text-[10px] opacity-80">Versi terbaru telah dirilis.</span>
+                </div>
+            </div>
+            <button onclick="window.location.reload(true)" class="bg-white text-blue-600 px-4 py-1.5 rounded-lg text-xs font-bold">
+                REFRESH
+            </button>
+        </div>
+    </div>
 
     <!-- Modal Pilihan WhatsApp -->
     <div id="waModal" class="modal-overlay" onclick="closeWAModal()">
@@ -52,7 +82,6 @@
                 <p class="text-gray-500 text-sm mt-1">Pilih layanan darurat kami:</p>
             </div>
 
-            <!-- Panduan Bantuan (Box Baru) -->
             <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 mb-6">
                 <h4 class="text-blue-800 font-bold text-xs uppercase tracking-wider mb-3 flex items-center gap-2">
                     <i class="fas fa-info-circle"></i> Panduan Meminta Bantuan:
@@ -229,6 +258,8 @@
             <div class="flex flex-col gap-2">
                 <p class="text-gray-800 font-bold uppercase tracking-widest text-sm">RS Dian Husada</p>
                 <p class="text-gray-400 text-[10px] sm:text-xs px-4 leading-relaxed">Jl. Raya Gemekan No.77, Sooko, Mojokerto | © 2026 IGD.</p>
+                <!-- Version Display -->
+                <p id="version-tag" class="text-[8px] text-gray-300 mt-2 font-mono uppercase tracking-widest">v1.0.0</p>
             </div>
         </div>
     </footer>
@@ -243,6 +274,14 @@
     </div>
 
     <script>
+        // CONFIGURATION - Ganti dengan URL repository Anda
+        const CONFIG = {
+            VERSION: "1.0.0", // Versi lokal aplikasi saat ini
+            GITHUB_OWNER: "igdrsdh", // Ganti dengan username GitHub
+            GITHUB_REPO: "landing-page-igd", // Ganti dengan nama repository
+            FILE_PATH: "index.html" // Path file di repository
+        };
+
         function openWAModal() {
             const modal = document.getElementById('waModal');
             modal.classList.add('modal-active');
@@ -254,6 +293,55 @@
             modal.classList.remove('modal-active');
             document.body.style.overflow = 'auto'; 
         }
+
+        /**
+         * AUTO UPDATE LOGIC
+         * Mengecek SHA commit terakhir dari file di GitHub.
+         * Jika SHA berbeda dengan yang tersimpan, tampilkan notifikasi update.
+         */
+        async function checkUpdates() {
+            try {
+                // Menampilkan versi saat ini di footer
+                document.getElementById('version-tag').innerText = `v${CONFIG.VERSION}`;
+
+                // Jika di lingkungan local file (bukan server), skip update check
+                if (window.location.protocol === 'file:') return;
+
+                const apiUrl = `https://api.github.com/repos/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/${CONFIG.FILE_PATH}`;
+                
+                const response = await fetch(apiUrl, { cache: "no-store" });
+                if (!response.ok) return;
+
+                const data = await response.json();
+                const latestSha = data.sha;
+                const localSha = localStorage.getItem('app_version_sha');
+
+                // Jika SHA belum ada (kunjungan pertama), simpan SHA sekarang sebagai dasar
+                if (!localSha) {
+                    localStorage.setItem('app_version_sha', latestSha);
+                    return;
+                }
+
+                // Jika SHA di GitHub berbeda dengan lokal
+                if (localSha !== latestSha) {
+                    showUpdateToast();
+                    // Simpan SHA baru (akan aktif setelah refresh)
+                    localStorage.setItem('app_version_sha', latestSha);
+                }
+            } catch (error) {
+                console.log("Gagal mengecek update:", error);
+            }
+        }
+
+        function showUpdateToast() {
+            const toast = document.getElementById('update-toast');
+            toast.style.display = 'block';
+        }
+
+        // Jalankan pengecekan saat halaman selesai dimuat
+        window.onload = function() {
+            checkUpdates();
+        };
     </script>
 
 </body>
